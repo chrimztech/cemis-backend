@@ -30,7 +30,10 @@
       "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Where-Object { $_.Id -ne $PID } | Select-Object Id, StartTime | Format-Table -AutoSize)",
       "PowerShell(Stop-Process -Id 41248 -Force -Confirm:$false)",
       "Bash(mkdir -p \"F:/CIMS/Frontend Database Builder/deploy\")",
-      "Bash(powershell -Command \"Get-CimInstance Win32_Process -Filter \\\\\"ProcessId=20840\\\\\" | Select-Object ProcessId, CommandLine | Format-List\")"
+      "Bash(powershell -Command \"Get-CimInstance Win32_Process -Filter \\\\\"ProcessId=20840\\\\\" | Select-Object ProcessId, CommandLine | Format-List\")",
+      "Bash(PGPASSWORD=11111111 psql -U postgres -h localhost -d cemis -c ' *)",
+      "Bash(PGPASSWORD=11111111 psql -U postgres -h localhost -d cemis -c \"DELETE FROM users WHERE email='deploy-smoke-test@local.test' RETURNING email;\")",
+      "Bash(rm -f /tmp/token.env /tmp/login.json /tmp/cemis_backend.log /tmp/nitro_boot.log /tmp/nitro_smoke.log)"
     ],
     "additionalDirectories": [
       "F:\\CIMS\\Frontend Database Builder",
