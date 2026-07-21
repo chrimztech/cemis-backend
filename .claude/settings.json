@@ -1,0 +1,45 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"F:/CIMS/Frontend Database Builder\" && echo \"--- branding.ts \\(head\\) ---\" && sed -n '1,25p' src/lib/branding.ts 2>/dev/null; echo \"--- backup.functions.ts \\(head\\) ---\" && sed -n '1,20p' src/lib/api/backup.functions.ts 2>/dev/null; echo \"--- verify route ---\" && cat src/routes/verify.\\\\$certificateId.tsx)",
+      "Read(//f/CIMS/cemis-backend/src/routes/**)",
+      "Bash(taskkill //F //IM node.exe //FI \"WINDOWTITLE eq *\")",
+      "Bash(curl -s -o /dev/null -w \"port check: %{http_code}\\\\n\" --max-time 2 http://localhost:4173/)",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Id 5300 -Force -Confirm:$false)",
+      "Bash(xargs -I{} sh -c 'echo \"{}\"; grep -n \"supabase\\\\.\" \"{}\" | head -5')",
+      "Bash(pg_isready -h localhost -p 5432)",
+      "Bash(java -version)",
+      "Bash(mvn -version)",
+      "Bash(PGPASSWORD=postgres psql -U postgres -h localhost -c \"SELECT datname FROM pg_database WHERE datname='cemis';\")",
+      "Bash(PGPASSWORD=11111111 psql -U postgres -h localhost -c \"SELECT 1;\")",
+      "Bash(PGPASSWORD=11111111 psql -U postgres -h localhost -c \"SELECT datname FROM pg_database WHERE datname='cemis';\")",
+      "Bash(PGPASSWORD=11111111 psql -U postgres -h localhost -d cemis -c \"\\\\dt\")",
+      "Bash(mvn -q -DskipTests clean package)",
+      "Bash(curl -s -o /dev/null -w \"existing :8080 -> %{http_code}\\\\n\" --max-time 3 http://localhost:8080/api/auth/me)",
+      "Bash(netstat -ano)",
+      "Bash(tee /tmp/login.json)",
+      "Bash(PGPASSWORD=11111111 psql -U postgres -h localhost -d cemis -c \"\\\\d students\")",
+      "Bash(PGPASSWORD=11111111 psql -U postgres -h localhost -d cemis -c \"\\\\d courses\")",
+      "Bash(PGPASSWORD=11111111 psql -U postgres -h localhost -d cemis -c \"\\\\d enrolments\")",
+      "Bash(PGPASSWORD=11111111 psql -U postgres -h localhost -d cemis -c \"\\\\d certificates\")",
+      "Bash(PGPASSWORD=11111111 psql -U postgres -h localhost -d cemis -c \"\\\\d org_settings\")",
+      "Bash(PGPASSWORD=11111111 psql -U postgres -h localhost -d cemis -c \"\\\\d users\")",
+      "Bash(PGPASSWORD=11111111 psql -U postgres -h localhost -d cemis -c \"\\\\d student_access_log\")",
+      "Bash(xargs -I{} sh -c 'echo \"=== {} ===\"; cat \"{}\"')",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Where-Object { $_.Id -ne $PID } | Select-Object Id, StartTime | Format-Table -AutoSize)",
+      "PowerShell(Stop-Process -Id 41248 -Force -Confirm:$false)",
+      "Bash(mkdir -p \"F:/CIMS/Frontend Database Builder/deploy\")",
+      "Bash(powershell -Command \"Get-CimInstance Win32_Process -Filter \\\\\"ProcessId=20840\\\\\" | Select-Object ProcessId, CommandLine | Format-List\")"
+    ],
+    "additionalDirectories": [
+      "F:\\CIMS\\Frontend Database Builder",
+      "F:\\CIMS\\Frontend Database Builder\\src\\lib",
+      "F:\\CIMS\\Frontend Database Builder\\src\\routes",
+      "F:\\CIMS\\Frontend Database Builder\\src\\components\\admin",
+      "F:\\CIMS\\Frontend Database Builder\\src\\lib\\api",
+      "F:\\CIMS\\Frontend Database Builder\\src",
+      "F:\\CIMS\\Frontend Database Builder\\deploy"
+    ]
+  }
+}

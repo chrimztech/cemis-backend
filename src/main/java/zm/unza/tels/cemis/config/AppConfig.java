@@ -19,7 +19,13 @@ public class AppConfig {
     public CorsFilter corsFilter() {
         var config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of(publicUrl, "http://localhost:5173", "http://localhost:8081", "http://localhost:3000"));
+        // The real deployed frontend origin, always allowed.
+        config.addAllowedOrigin(publicUrl);
+        // Any localhost/127.0.0.1 port — Vite's dev server picks a free port
+        // per run (5173, 8081, 8082, ...), so a fixed list keeps breaking.
+        config.setAllowedOriginPatterns(List.of(
+            publicUrl, "http://localhost:*", "http://127.0.0.1:*"
+        ));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setExposedHeaders(List.of("Authorization"));
