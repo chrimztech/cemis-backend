@@ -100,6 +100,14 @@ public class Certificate {
     @Column(name = "national_id")
     private String nationalId;
 
+    // Frozen at generation time from the course's certificate_type, so a later
+    // change to the course's type never retroactively changes past certificates.
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(name = "certificate_type", columnDefinition = "certificate_type")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    private CertificateType certificateType = CertificateType.competence;
+
     @Builder.Default
     @Column(name = "created_at", updatable = false)
     private Instant createdAt = Instant.now();

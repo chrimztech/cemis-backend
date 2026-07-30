@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zm.unza.tels.cemis.entity.Certificate;
+import zm.unza.tels.cemis.entity.CertificateType;
 import zm.unza.tels.cemis.entity.Enrolment;
 import zm.unza.tels.cemis.entity.User;
 import zm.unza.tels.cemis.exception.ResourceNotFoundException;
@@ -81,6 +82,7 @@ public class CertificateService {
             .issuedBy(issuedBy)
             .issueDate(LocalDate.now())
             .nationalId(student != null ? student.getNationalId() : null)
+            .certificateType(course != null ? course.getCertificateType() : CertificateType.competence)
             .build();
 
         // Sign immediately
