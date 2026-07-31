@@ -9,6 +9,7 @@ zm\unza\tels\cemis\entity\Certificate$CertificateBuilder.class
 zm\unza\tels\cemis\repository\EnrolmentRepository.class
 zm\unza\tels\cemis\controller\ReportController.class
 zm\unza\tels\cemis\entity\Student$StudentBuilder.class
+zm\unza\tels\cemis\entity\CertificateTemplate$CertificateTemplateBuilder.class
 zm\unza\tels\cemis\CemisApplication.class
 zm\unza\tels\cemis\entity\StudentAccessLog$StudentAccessLogBuilder.class
 zm\unza\tels\cemis\repository\UserRepository.class
@@ -38,8 +39,10 @@ zm\unza\tels\cemis\security\JwtTokenProvider.class
 zm\unza\tels\cemis\controller\EnrolmentController.class
 zm\unza\tels\cemis\security\UserDetailsServiceImpl.class
 zm\unza\tels\cemis\repository\CertificateCounterRepository.class
+zm\unza\tels\cemis\entity\CertificateTemplate.class
 zm\unza\tels\cemis\service\EnrolmentService.class
 zm\unza\tels\cemis\repository\StudentAccessLogRepository.class
+zm\unza\tels\cemis\controller\CertificateTemplateController.class
 zm\unza\tels\cemis\entity\Enrolment.class
 zm\unza\tels\cemis\entity\StudentAccessLog.class
 zm\unza\tels\cemis\dto\AuditLogEntryDto$StudentSummary.class
@@ -50,9 +53,11 @@ zm\unza\tels\cemis\service\CourseService.class
 zm\unza\tels\cemis\repository\StudentRepository.class
 zm\unza\tels\cemis\service\EmailService.class
 zm\unza\tels\cemis\controller\CourseController.class
+zm\unza\tels\cemis\entity\CertificateType.class
 zm\unza\tels\cemis\entity\OrgSettings.class
 zm\unza\tels\cemis\service\StudentService.class
 zm\unza\tels\cemis\controller\CertificateController.class
 zm\unza\tels\cemis\entity\CertificateCounter.class
 zm\unza\tels\cemis\repository\OrgSettingsRepository.class
 zm\unza\tels\cemis\controller\SettingsController.class
+zm\unza\tels\cemis\repository\CertificateTemplateRepository.class

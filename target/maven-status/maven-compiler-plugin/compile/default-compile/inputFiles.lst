@@ -16,9 +16,12 @@ F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\repository\CourseReposito
 F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\service\AuthService.java
 F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\controller\SettingsController.java
 F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\service\StudentService.java
+F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\controller\CertificateTemplateController.java
+F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\entity\CertificateTemplate.java
 F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\security\CemisUserDetails.java
 F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\security\JwtAuthFilter.java
 F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\security\JwtTokenProvider.java
+F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\entity\CertificateType.java
 F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\controller\CertificateController.java
 F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\CemisApplication.java
 F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\controller\CourseController.java
@@ -40,4 +43,5 @@ F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\entity\Student.java
 F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\service\CertificateService.java
 F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\service\EnrolmentService.java
 F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\repository\EnrolmentRepository.java
+F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\repository\CertificateTemplateRepository.java
 F:\CIMS\cemis-backend\src\main\java\zm\unza\tels\cemis\entity\CertificateCounter.java
