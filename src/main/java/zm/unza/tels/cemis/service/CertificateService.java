@@ -115,6 +115,37 @@ public class CertificateService {
         if (fields.containsKey("email_status")) {
             cert.setEmailStatus(fields.get("email_status").toString());
         }
+
+        // Editable embedded fields — fixes typos/data-entry mistakes (e.g. NRC entered
+        // as the UNZA computer number) without needing to delete and regenerate.
+        boolean resign = false;
+        if (fields.containsKey("recipient_name")) {
+            Object val = fields.get("recipient_name");
+            cert.setRecipientName(val != null ? val.toString() : cert.getRecipientName());
+        }
+        if (fields.containsKey("recipient_email")) {
+            Object val = fields.get("recipient_email");
+            cert.setRecipientEmail(val != null ? val.toString() : null);
+        }
+        if (fields.containsKey("programme")) {
+            Object val = fields.get("programme");
+            cert.setProgramme(val != null ? val.toString() : cert.getProgramme());
+        }
+        if (fields.containsKey("national_id")) {
+            Object val = fields.get("national_id");
+            cert.setNationalId(val != null ? val.toString() : null);
+        }
+        if (fields.containsKey("issue_date")) {
+            Object val = fields.get("issue_date");
+            if (val != null) {
+                cert.setIssueDate(java.time.LocalDate.parse(val.toString()));
+                resign = true; // issue_date is part of the signed payload
+            }
+        }
+        if (resign) {
+            signCert(cert);
+        }
+
         return certRepository.save(cert);
     }
 
@@ -185,18 +216,24 @@ public class CertificateService {
         payload.put("issued_at",        cert.getIssueDate().toString());
         payload.put("issuer_id",        cert.getIssuedBy() != null ? cert.getIssuedBy().getId().toString() : null);
 
-        String data = payload.toString(); // deterministic for same keys
         cert.setSignedPayload(payload);
-        cert.setSignature(hmac(data));
+        cert.setSignature(hmac(canonical(payload)));
     }
 
     private boolean verifySignature(Map<String, Object> payload, String signature) {
         try {
-            String data = payload.toString();
-            return hmac(data).equals(signature);
+            return hmac(canonical(payload)).equals(signature);
         } catch (Exception e) {
             return false;
         }
+    }
+
+    // Postgres JSONB does not preserve object key insertion order on round-trip,
+    // so Map.toString() gives a different string (and thus a different HMAC) after
+    // the entity is reloaded from the DB than it did at signing time. Sorting keys
+    // first makes the hashed representation independent of storage/reload order.
+    private String canonical(Map<String, Object> payload) {
+        return new java.util.TreeMap<>(payload).toString();
     }
 
     private String hmac(String data) {
