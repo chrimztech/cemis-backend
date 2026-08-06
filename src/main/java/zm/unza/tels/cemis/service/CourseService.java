@@ -34,15 +34,17 @@ public class CourseService {
     @Transactional
     public Course update(UUID id, Course patch) {
         var existing = getById(id);
-        if (patch.getName()         != null) existing.setName(patch.getName());
-        if (patch.getDescription()  != null) existing.setDescription(patch.getDescription());
-        if (patch.getPrefix()       != null) existing.setPrefix(patch.getPrefix());
-        if (patch.getMode()         != null) existing.setMode(patch.getMode());
-        if (patch.getDurationText() != null) existing.setDurationText(patch.getDurationText());
-        if (patch.getFeeUnza()      != null) existing.setFeeUnza(patch.getFeeUnza());
-        if (patch.getFeeNonUnza()   != null) existing.setFeeNonUnza(patch.getFeeNonUnza());
-        if (patch.getStartDate()    != null) existing.setStartDate(patch.getStartDate());
-        if (patch.getTimeSlot()     != null) existing.setTimeSlot(patch.getTimeSlot());
+        if (patch.getName()            != null) existing.setName(patch.getName());
+        if (patch.getDescription()     != null) existing.setDescription(patch.getDescription());
+        if (patch.getCategory()        != null) existing.setCategory(patch.getCategory());
+        if (patch.getPrefix()          != null) existing.setPrefix(patch.getPrefix());
+        if (patch.getMode()            != null) existing.setMode(patch.getMode());
+        if (patch.getDurationText()    != null) existing.setDurationText(patch.getDurationText());
+        if (patch.getFeeUnza()         != null) existing.setFeeUnza(patch.getFeeUnza());
+        if (patch.getFeeNonUnza()      != null) existing.setFeeNonUnza(patch.getFeeNonUnza());
+        if (patch.getStartDate()       != null) existing.setStartDate(patch.getStartDate());
+        if (patch.getTimeSlot()        != null) existing.setTimeSlot(patch.getTimeSlot());
+        if (patch.getCertificateType() != null) existing.setCertificateType(patch.getCertificateType());
         existing.setActive(patch.isActive());
         return courseRepository.save(existing);
     }
