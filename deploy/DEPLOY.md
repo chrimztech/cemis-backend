@@ -117,8 +117,12 @@ cd /opt/cemis/frontend && git pull && ./deploy/build.sh && sudo systemctl restar
 ## Notes / follow-ups
 
 - Certificate PDFs and branding assets are stored on local disk
-  (`/opt/cemis/data/...`) — back this up. There's a Backup & Export admin
-  screen for exporting the DB tables + storage manifest as JSON/CSV.
+  (`/opt/cemis/data/...`). The admin Backup & export screen's "Download full
+  backup archive" button produces one ZIP with a full `pg_dump` of the
+  database plus every file in both directories — install `postgresql-client`
+  (or set `PG_DUMP_PATH`) on the server so `pg_dump` is available to the
+  backend process. The screen also still offers per-table CSV/JSON export and
+  a storage manifest for quicker, partial exports.
 - The frontend still ships with `SMTP_*` config duplicated in its own
   `.env.local`/`frontend.env` for a couple of legacy code paths
   (`lib/email.server.ts`) — only the backend's SMTP config is actually used

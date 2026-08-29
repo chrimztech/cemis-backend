@@ -28,18 +28,22 @@ public class StudentService {
     private final StudentRepository       studentRepository;
     private final StudentAccessLogRepository logRepository;
 
+    @Transactional(readOnly = true)
     public List<Student> listAll() {
         return studentRepository.findAllByOrderByFullNameAsc();
     }
 
+    @Transactional(readOnly = true)
     public Page<Student> search(String query, int page, int size) {
         return studentRepository.search(query, PageRequest.of(page, size));
     }
 
+    @Transactional(readOnly = true)
     public Optional<Student> findByNationalId(String nationalId) {
         return studentRepository.findByNationalId(nationalId);
     }
 
+    @Transactional(readOnly = true)
     public Student getById(UUID id) {
         return studentRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Student not found: " + id));

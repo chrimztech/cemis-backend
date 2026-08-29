@@ -29,15 +29,18 @@ public class CertificateService {
     @Value("${app.cert.signing-secret}")
     private String signingSecret;
 
+    @Transactional(readOnly = true)
     public List<Certificate> listAll() {
         return certRepository.findAllWithDetails();
     }
 
+    @Transactional(readOnly = true)
     public Certificate getById(UUID id) {
         return certRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Certificate not found"));
     }
 
+    @Transactional(readOnly = true)
     public Optional<Certificate> findByCode(String code) {
         var found = certRepository.findByCertificateCode(code);
         return found.isPresent() ? found : certRepository.findByCertificateId(code);

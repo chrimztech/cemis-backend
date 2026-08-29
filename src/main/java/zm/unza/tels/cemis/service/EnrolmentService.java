@@ -22,10 +22,12 @@ public class EnrolmentService {
     private final StudentRepository   studentRepository;
     private final CourseRepository    courseRepository;
 
+    @Transactional(readOnly = true)
     public List<Enrolment> listAll() {
         return enrolmentRepository.findAllWithDetails();
     }
 
+    @Transactional(readOnly = true)
     public List<Enrolment> listFiltered(UUID studentId, List<String> statusIn, Boolean noCertificate) {
         if (studentId != null) {
             return enrolmentRepository.findByStudentIdWithDetails(studentId);
@@ -38,6 +40,7 @@ public class EnrolmentService {
         return enrolmentRepository.findAllWithDetails();
     }
 
+    @Transactional(readOnly = true)
     public Enrolment getById(UUID id) {
         return enrolmentRepository.findByIdWithDetails(id)
             .orElseThrow(() -> new ResourceNotFoundException("Enrolment not found: " + id));
@@ -93,10 +96,19 @@ public class EnrolmentService {
 
     @Transactional
     public int bulkStart(List<UUID> ids) {
+        return bulkUpdateStatus(ids, Enrolment.EnrolStatus.in_progress);
+    }
+
+    @Transactional
+    public int bulkComplete(List<UUID> ids) {
+        return bulkUpdateStatus(ids, Enrolment.EnrolStatus.completed);
+    }
+
+    private int bulkUpdateStatus(List<UUID> ids, Enrolment.EnrolStatus status) {
         int count = 0;
         for (UUID id : ids) {
             try {
-                updateStatus(id, Enrolment.EnrolStatus.in_progress);
+                updateStatus(id, status);
                 count++;
             } catch (Exception ignored) {}
         }

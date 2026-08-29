@@ -64,6 +64,13 @@ public class EnrolmentController {
         return ResponseEntity.ok(Map.of("updated", updated));
     }
 
+    @PostMapping("/bulk-complete")
+    public ResponseEntity<Map<String, Object>> bulkComplete(@RequestBody Map<String, List<String>> body) {
+        List<UUID> ids = body.get("ids").stream().map(UUID::fromString).toList();
+        int updated = enrolmentService.bulkComplete(ids);
+        return ResponseEntity.ok(Map.of("updated", updated));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable UUID id) {
         enrolmentService.delete(id);

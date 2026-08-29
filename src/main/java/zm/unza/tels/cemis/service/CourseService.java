@@ -16,9 +16,13 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
 
+    @Transactional(readOnly = true)
     public List<Course> listAll()    { return courseRepository.findAllByOrderByNameAsc(); }
+
+    @Transactional(readOnly = true)
     public List<Course> listActive() { return courseRepository.findByActiveTrueOrderByNameAsc(); }
 
+    @Transactional(readOnly = true)
     public Course getById(UUID id) {
         return courseRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Course not found: " + id));
