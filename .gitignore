@@ -1,0 +1,14 @@
+target/
+*.class
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Runtime data directories (server-specific, not part of the source tree)
+cert-pdfs/
+branding-assets/
+
+# Local secrets — never commit real credentials
+.env
+*.env.local
