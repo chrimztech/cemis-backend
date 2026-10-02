@@ -43,6 +43,15 @@ public class EnrolmentService {
         return enrolmentRepository.findAllWithDetails();
     }
 
+    @Transactional(readOnly = true)
+    public Page<Enrolment> listFilteredPaged(List<String> statusIn, Boolean noCertificate, int page, int size) {
+        List<Enrolment.EnrolStatus> statuses = (statusIn == null ? List.<String>of() : statusIn).stream()
+            .map(Enrolment.EnrolStatus::valueOf).toList();
+        return enrolmentRepository.findByStatusInAndNoCertificate(
+            statuses, PageRequest.of(page, size, Sort.by("createdAt").descending())
+        );
+    }
+
     // Postgres can't infer a bind parameter's type from a bare "? IS NULL" check on a
     // timestamp column, so absent date bounds use these sentinels instead of NULL.
     private static final Instant MIN_DATE = Instant.EPOCH;

@@ -33,6 +33,16 @@ public interface EnrolmentRepository extends JpaRepository<Enrolment, UUID> {
            "WHERE e.status IN :statuses AND e.certificate IS NULL ORDER BY e.createdAt DESC")
     List<Enrolment> findByStatusInAndNoCertificate(@Param("statuses") List<Enrolment.EnrolStatus> statuses);
 
+    @Query(
+        value = "SELECT e FROM Enrolment e LEFT JOIN FETCH e.student LEFT JOIN FETCH e.course " +
+            "WHERE e.status IN :statuses AND e.certificate IS NULL",
+        countQuery = "SELECT COUNT(e) FROM Enrolment e " +
+            "WHERE e.status IN :statuses AND e.certificate IS NULL"
+    )
+    Page<Enrolment> findByStatusInAndNoCertificate(
+        @Param("statuses") List<Enrolment.EnrolStatus> statuses, Pageable pageable
+    );
+
     boolean existsByStudentIdAndCourseId(UUID studentId, UUID courseId);
 
     @Query("SELECT COUNT(e) FROM Enrolment e WHERE e.status = :status")

@@ -34,6 +34,11 @@ public class EnrolmentController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size) {
         if (page != null) {
+            if (studentId == null && Boolean.TRUE.equals(noCertificate) && statusIn != null && !statusIn.isEmpty()) {
+                return ResponseEntity.ok(
+                    enrolmentService.listFilteredPaged(statusIn, noCertificate, page, size == null ? 25 : size)
+                );
+            }
             Enrolment.EnrolStatus statusEnum = status != null ? Enrolment.EnrolStatus.valueOf(status) : null;
             Instant from = fromDate != null ? LocalDate.parse(fromDate).atStartOfDay(ZoneOffset.UTC).toInstant() : null;
             Instant to = toDate != null ? LocalDate.parse(toDate).atTime(23, 59, 59).atZone(ZoneOffset.UTC).toInstant() : null;
