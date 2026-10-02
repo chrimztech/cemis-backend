@@ -1,6 +1,9 @@
 package zm.unza.tels.cemis.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zm.unza.tels.cemis.entity.Enrolment;
@@ -38,6 +41,23 @@ public class EnrolmentService {
             return enrolmentRepository.findByStatusInAndNoCertificate(statuses);
         }
         return enrolmentRepository.findAllWithDetails();
+    }
+
+    // Postgres can't infer a bind parameter's type from a bare "? IS NULL" check on a
+    // timestamp column, so absent date bounds use these sentinels instead of NULL.
+    private static final Instant MIN_DATE = Instant.EPOCH;
+    private static final Instant MAX_DATE = Instant.parse("9999-12-31T23:59:59Z");
+
+    @Transactional(readOnly = true)
+    public Page<Enrolment> search(
+            String q, UUID courseId, Enrolment.EnrolStatus status,
+            Instant fromDate, Instant toDate, int page, int size) {
+        return enrolmentRepository.search(
+            q == null ? "" : q, courseId, status != null ? status.name() : null,
+            fromDate != null ? fromDate : MIN_DATE,
+            toDate != null ? toDate : MAX_DATE,
+            PageRequest.of(page, size, Sort.by("enrolledAt").descending())
+        );
     }
 
     @Transactional(readOnly = true)

@@ -25,11 +25,19 @@ public class StudentController {
     private final UserRepository  userRepository;
 
     @GetMapping
-    public ResponseEntity<?> list(@RequestParam(required = false) String nationalId) {
+    public ResponseEntity<?> list(
+            @RequestParam(required = false) String nationalId,
+            @RequestParam(required = false) String q,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size) {
         if (nationalId != null) {
             return studentService.findByNationalId(nationalId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.noContent().build());
+        }
+        if (page != null) {
+            return ResponseEntity.ok(studentService.search(q, category, page, size == null ? 25 : size));
         }
         return ResponseEntity.ok(studentService.listAll());
     }

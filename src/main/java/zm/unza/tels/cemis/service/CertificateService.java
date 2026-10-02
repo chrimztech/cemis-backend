@@ -2,6 +2,9 @@ package zm.unza.tels.cemis.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zm.unza.tels.cemis.entity.Certificate;
@@ -32,6 +35,14 @@ public class CertificateService {
     @Transactional(readOnly = true)
     public List<Certificate> listAll() {
         return certRepository.findAllWithDetails();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Certificate> search(String q, Certificate.CertStatus status, String emailStatus, int page, int size) {
+        return certRepository.search(
+            q == null ? "" : q, status != null ? status.name() : null, emailStatus,
+            PageRequest.of(page, size, Sort.by("createdAt").descending())
+        );
     }
 
     @Transactional(readOnly = true)

@@ -7,6 +7,9 @@ import zm.unza.tels.cemis.entity.Enrolment;
 import zm.unza.tels.cemis.service.EnrolmentService;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -19,11 +22,26 @@ public class EnrolmentController {
     private final EnrolmentService enrolmentService;
 
     @GetMapping
-    public List<Enrolment> list(
+    public ResponseEntity<?> list(
             @RequestParam(required = false) UUID studentId,
             @RequestParam(required = false) List<String> statusIn,
-            @RequestParam(required = false) Boolean noCertificate) {
-        return enrolmentService.listFiltered(studentId, statusIn, noCertificate);
+            @RequestParam(required = false) Boolean noCertificate,
+            @RequestParam(required = false) String q,
+            @RequestParam(required = false) UUID courseId,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String fromDate,
+            @RequestParam(required = false) String toDate,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size) {
+        if (page != null) {
+            Enrolment.EnrolStatus statusEnum = status != null ? Enrolment.EnrolStatus.valueOf(status) : null;
+            Instant from = fromDate != null ? LocalDate.parse(fromDate).atStartOfDay(ZoneOffset.UTC).toInstant() : null;
+            Instant to = toDate != null ? LocalDate.parse(toDate).atTime(23, 59, 59).atZone(ZoneOffset.UTC).toInstant() : null;
+            return ResponseEntity.ok(
+                enrolmentService.search(q, courseId, statusEnum, from, to, page, size == null ? 25 : size)
+            );
+        }
+        return ResponseEntity.ok(enrolmentService.listFiltered(studentId, statusIn, noCertificate));
     }
 
     @GetMapping("/{id}")

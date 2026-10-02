@@ -1,6 +1,9 @@
 package zm.unza.tels.cemis.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zm.unza.tels.cemis.entity.Course;
@@ -21,6 +24,14 @@ public class CourseService {
 
     @Transactional(readOnly = true)
     public List<Course> listActive() { return courseRepository.findByActiveTrueOrderByNameAsc(); }
+
+    @Transactional(readOnly = true)
+    public Page<Course> search(String query, boolean activeOnly, String category, int page, int size) {
+        return courseRepository.search(
+            query == null ? "" : query, activeOnly, category,
+            PageRequest.of(page, size, Sort.by("category", "name").ascending())
+        );
+    }
 
     @Transactional(readOnly = true)
     public Course getById(UUID id) {

@@ -41,8 +41,17 @@ public class CertificateController {
     private String pdfDir;
 
     @GetMapping
-    public List<Certificate> list() {
-        return certService.listAll();
+    public ResponseEntity<?> list(
+            @RequestParam(required = false) String q,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String emailStatus,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size) {
+        if (page != null) {
+            Certificate.CertStatus statusEnum = status != null ? Certificate.CertStatus.valueOf(status) : null;
+            return ResponseEntity.ok(certService.search(q, statusEnum, emailStatus, page, size == null ? 25 : size));
+        }
+        return ResponseEntity.ok(certService.listAll());
     }
 
     @GetMapping("/{id}")

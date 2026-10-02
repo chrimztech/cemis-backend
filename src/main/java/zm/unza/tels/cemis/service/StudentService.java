@@ -4,6 +4,7 @@ import com.opencsv.CSVReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,8 +35,11 @@ public class StudentService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Student> search(String query, int page, int size) {
-        return studentRepository.search(query, PageRequest.of(page, size));
+    public Page<Student> search(String query, String category, int page, int size) {
+        return studentRepository.search(
+            query == null ? "" : query, category,
+            PageRequest.of(page, size, Sort.by("fullName").ascending())
+        );
     }
 
     @Transactional(readOnly = true)
@@ -51,6 +55,11 @@ public class StudentService {
 
     @Transactional
     public Student create(Student student, User actor) {
+        if (student.getNationalId() != null && !student.getNationalId().isBlank()
+                && studentRepository.findByNationalId(student.getNationalId()).isPresent()) {
+            throw new IllegalStateException(
+                "A student with NRC " + student.getNationalId() + " is already registered");
+        }
         var saved = studentRepository.save(student);
         log(saved, actor, "created", null);
         return saved;
@@ -59,6 +68,15 @@ public class StudentService {
     @Transactional
     public Student update(UUID id, Student patch, User actor) {
         var existing = getById(id);
+        if (patch.getNationalId() != null && !patch.getNationalId().isBlank()
+                && !patch.getNationalId().equals(existing.getNationalId())) {
+            studentRepository.findByNationalId(patch.getNationalId()).ifPresent(other -> {
+                if (!other.getId().equals(id)) {
+                    throw new IllegalStateException(
+                        "A student with NRC " + patch.getNationalId() + " is already registered");
+                }
+            });
+        }
         if (patch.getFullName()     != null) existing.setFullName(patch.getFullName());
         if (patch.getEmail()        != null) existing.setEmail(patch.getEmail());
         if (patch.getPhone()        != null) existing.setPhone(patch.getPhone());
